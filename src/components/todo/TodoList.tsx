@@ -4,6 +4,7 @@ import { useTodo } from '@/context/TodoContext';
 import { Todo } from '@/types/todo';
 import { TodoItem } from './TodoItem';
 import { TodoForm } from './TodoForm';
+import { TodoFilter } from './TodoFilter';
 import { getTodoStats } from '@/utils/todoUtils';
 import { useParams } from 'react-router-dom';
 
@@ -20,13 +21,15 @@ export function TodoList({ filter }: TodoListProps) {
   const filteredTodos = state.todos.filter(todo => {
     if (filter === 'active') return !todo.completed;
     if (filter === 'completed') return todo.completed;
-    if (filter === 'category' && category) return todo.category.toLowerCase() === category.toLowerCase();
+    if (filter === 'category' && category && todo.category) {
+      return todo.category.toLowerCase() === category.toLowerCase();
+    }
     return true;
   });
 
   return (
     <div className="space-y-6">
-      {/* Page Title */}
+      {/* Page Title and Add Button */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           {filter === 'category' && category
@@ -45,6 +48,9 @@ export function TodoList({ filter }: TodoListProps) {
           Add Task
         </button>
       </div>
+
+      {/* Filter Controls */}
+      <TodoFilter />
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
