@@ -7,17 +7,19 @@ import { CompletedTasks } from './components/pages/CompletedTasks';
 
 function App() {
   return (
-    <BrowserRouter>
-      <TodoProvider>
-        <MainLayout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/active" element={<ActiveTasks />} />
-            <Route path="/completed" element={<CompletedTasks />} />
-          </Routes>
-        </MainLayout>
-      </TodoProvider>
-    </BrowserRouter>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      <BrowserRouter>
+        <TodoProvider>
+          <MainLayout>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/active" element={<ActiveTasks />} />
+              <Route path="/completed" element={<CompletedTasks />} />
+            </Routes>
+          </MainLayout>
+        </TodoProvider>
+      </BrowserRouter>
+    </div>
   );
 }
 
