@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useTodo } from '@/context/TodoContext';
 import { TodoFilters } from '@/types/todo';
+import { motion } from 'framer-motion';
 
 export function Header() {
   const { state, dispatch } = useTodo();
   const [searchQuery, setSearchQuery] = useState(state.filters.searchQuery);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,40 +20,81 @@ export function Header() {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-10 backdrop-blur-xl bg-white/50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+      <div className="max-w-7xl mx-auto px-8">
         <div className="flex justify-between items-center py-4">
           <div className="flex-1 max-w-lg">
-            <form onSubmit={handleSearch} className="relative">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search todos..."
-                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <div className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
+            <motion.form
+              onSubmit={handleSearch}
+              className="relative"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div
+                className={`relative flex items-center ${
+                  isSearchFocused
+                    ? 'ring-2 ring-indigo-500'
+                    : 'ring-1 ring-gray-200 dark:ring-gray-700'
+                } rounded-xl bg-white dark:bg-gray-700 transition-all duration-200`}
+              >
+                <div className="absolute left-0 inset-y-0 flex items-center pl-4">
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setIsSearchFocused(false)}
+                  placeholder="Search todos..."
+                  className="w-full pl-12 pr-4 py-3 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none rounded-xl"
+                />
+                {searchQuery && (
+                  <motion.button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-0 inset-y-0 flex items-center pr-4"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                  >
+                    <svg
+                      className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </motion.button>
+                )}
               </div>
-            </form>
+            </motion.form>
           </div>
 
           <div className="flex items-center space-x-4">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="p-2 rounded-xl hover:bg-white/20 dark:hover:bg-gray-700/50 transition-colors"
             >
               {isDarkMode ? (
                 <svg
@@ -69,7 +112,7 @@ export function Header() {
                 </svg>
               ) : (
                 <svg
-                  className="h-6 w-6 text-gray-600"
+                  className="h-6 w-6 text-gray-600 dark:text-gray-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -82,10 +125,14 @@ export function Header() {
                   />
                 </svg>
               )}
-            </button>
+            </motion.button>
 
-            <div className="relative">
-              <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative"
+            >
+              <button className="p-2 rounded-xl hover:bg-white/20 dark:hover:bg-gray-700/50 transition-colors">
                 <svg
                   className="h-6 w-6 text-gray-600 dark:text-gray-300"
                   fill="none"
@@ -100,8 +147,12 @@ export function Header() {
                   />
                 </svg>
               </button>
-              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
-            </div>
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"
+              />
+            </motion.div>
           </div>
         </div>
       </div>
