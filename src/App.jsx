@@ -1,7 +1,4 @@
 import { useState, useEffect } from 'react'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import Todo from './components/Todo'
 import FilterControls from './components/FilterControls'
 import SearchBar from './components/SearchBar'
@@ -60,16 +57,6 @@ function App() {
     setTodos(todos.filter(todo => !todo.completed))
   }
 
-  const handleDragEnd = (result) => {
-    if (!result.destination) return
-    
-    const items = Array.from(todos)
-    const [reorderedItem] = items.splice(result.source.index, 1)
-    items.splice(result.destination.index, 0, reorderedItem)
-    
-    setTodos(items)
-  }
-
   const filteredTodos = todos.filter(todo => {
     const matchesFilter = filter === 'all' || 
       (filter === 'active' && !todo.completed) || 
@@ -113,41 +100,17 @@ function App() {
       
       <SearchBar onSearch={setSearchQuery} />
       
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="todos">
-          {(provided) => (
-            <div
-              className="todo-list"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {filteredTodos.map((todo, index) => (
-                <Draggable
-                  key={todo.id}
-                  draggableId={todo.id.toString()}
-                  index={index}
-                >
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <Todo
-                        todo={todo}
-                        onDelete={deleteTodo}
-                        onEdit={editTodo}
-                        onToggle={toggleTodo}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <div className="todo-list">
+        {filteredTodos.map(todo => (
+          <Todo
+            key={todo.id}
+            todo={todo}
+            onDelete={deleteTodo}
+            onEdit={editTodo}
+            onToggle={toggleTodo}
+          />
+        ))}
+      </div>
 
       <FilterControls
         todos={todos}
