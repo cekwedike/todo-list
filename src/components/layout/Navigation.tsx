@@ -22,16 +22,16 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
   ];
 
   return (
-    <aside
+    <nav
       className={`
-        fixed inset-y-0 left-0 z-30 w-72 bg-white dark:bg-gray-800 shadow-xl 
-        transform transition-transform duration-300 ease-in-out
-        lg:relative lg:translate-x-0 lg:shadow-none
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+        fixed top-16 left-0 h-[calc(100vh-4rem)] w-72 bg-white dark:bg-gray-800
+        transform transition-transform duration-300 ease-in-out z-30
+        lg:sticky lg:transform-none lg:shadow-none
+        ${!isOpen ? '-translate-x-full' : 'translate-x-0'}
       `}
     >
       {/* Navigation Content */}
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full overflow-y-auto">
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4 p-4">
           <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
@@ -45,7 +45,7 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
         </div>
 
         {/* Navigation Links */}
-        <nav className="flex-1 px-4 pb-4 space-y-1 overflow-y-auto">
+        <div className="flex-1 px-4 pb-4 space-y-1">
           <NavLink
             to="/"
             end
@@ -123,7 +123,7 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
               </NavLink>
             ))}
           </div>
-        </nav>
+        </div>
 
         {/* Footer */}
         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
@@ -145,6 +145,6 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
-    </aside>
+    </nav>
   );
 } 
