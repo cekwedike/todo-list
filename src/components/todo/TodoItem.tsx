@@ -22,51 +22,51 @@ export function TodoItem({ todo }: TodoItemProps) {
   const getPriorityColor = (priority: Todo['priority']) => {
     switch (priority) {
       case 'high':
-        return 'bg-red-100 text-red-600 dark:bg-red-900/50 dark:text-red-400';
+        return 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/50 dark:text-yellow-400';
+        return 'bg-yellow-50 text-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-400';
       case 'low':
-        return 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-400';
+        return 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400';
       default:
-        return 'bg-gray-100 text-gray-600 dark:bg-gray-900/50 dark:text-gray-400';
+        return 'bg-slate-50 text-slate-600 dark:bg-slate-900/20 dark:text-slate-400';
     }
   };
 
   const getCategoryColor = (category: Todo['category']) => {
     switch (category) {
       case 'work':
-        return 'bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400';
+        return 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400';
       case 'personal':
-        return 'bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-400';
+        return 'bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400';
       case 'shopping':
-        return 'bg-pink-100 text-pink-600 dark:bg-pink-900/50 dark:text-pink-400';
+        return 'bg-pink-50 text-pink-600 dark:bg-pink-900/20 dark:text-pink-400';
       case 'health':
-        return 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-400';
+        return 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400';
       default:
-        return 'bg-gray-100 text-gray-600 dark:bg-gray-900/50 dark:text-gray-400';
+        return 'bg-slate-50 text-slate-600 dark:bg-slate-900/20 dark:text-slate-400';
     }
   };
 
   return (
     <motion.div
       whileHover={{ scale: 1.01 }}
-      className="backdrop-blur-xl bg-white/50 dark:bg-gray-800/50 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+      className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"
     >
-      <div className="p-6">
-        <div className="flex items-start space-x-4">
+      <div className="p-4">
+        <div className="flex items-start space-x-3">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleToggle}
-            className={`flex-shrink-0 w-6 h-6 rounded-full border-2 ${
+            className={`flex-shrink-0 w-5 h-5 rounded border ${
               todo.completed
                 ? 'border-green-500 bg-green-500'
-                : 'border-gray-300 dark:border-gray-600'
-            } flex items-center justify-center`}
+                : 'border-slate-300 dark:border-slate-600'
+            } flex items-center justify-center mt-0.5`}
           >
             {todo.completed && (
               <svg
-                className="w-4 h-4 text-white"
+                className="w-3 h-3 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -82,19 +82,19 @@ export function TodoItem({ todo }: TodoItemProps) {
           </motion.button>
 
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between">
+            <div className="flex items-start justify-between">
               <h3
-                className={`text-lg font-medium ${
+                className={`text-base font-medium ${
                   todo.completed
-                    ? 'text-gray-400 dark:text-gray-500 line-through'
-                    : 'text-gray-900 dark:text-white'
+                    ? 'text-slate-400 dark:text-slate-500 line-through'
+                    : 'text-slate-900 dark:text-slate-100'
                 }`}
               >
                 {todo.text}
               </h3>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 ml-4">
                 <span
-                  className={`px-3 py-1 text-xs font-medium rounded-full ${getPriorityColor(
+                  className={`px-2 py-1 text-xs font-medium rounded-md ${getPriorityColor(
                     todo.priority
                   )}`}
                 >
@@ -102,7 +102,7 @@ export function TodoItem({ todo }: TodoItemProps) {
                 </span>
                 {todo.category && (
                   <span
-                    className={`px-3 py-1 text-xs font-medium rounded-full ${getCategoryColor(
+                    className={`px-2 py-1 text-xs font-medium rounded-md ${getCategoryColor(
                       todo.category
                     )}`}
                   >
@@ -113,9 +113,9 @@ export function TodoItem({ todo }: TodoItemProps) {
             </div>
 
             {todo.dueDate && (
-              <div className="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400">
+              <div className="mt-1 flex items-center text-sm text-slate-500 dark:text-slate-400">
                 <svg
-                  className="w-4 h-4 mr-2"
+                  className="w-4 h-4 mr-1.5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -123,7 +123,7 @@ export function TodoItem({ todo }: TodoItemProps) {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={1.5}
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                   />
                 </svg>
@@ -135,18 +135,18 @@ export function TodoItem({ todo }: TodoItemProps) {
               <motion.p
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
-                className="mt-4 text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4"
+                className="mt-3 text-sm text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-700/50 rounded-md p-3"
               >
                 {todo.notes}
               </motion.p>
             )}
 
-            <div className="mt-4 flex items-center space-x-4">
+            <div className="mt-3 flex items-center space-x-4">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center"
+                className="text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 flex items-center"
               >
                 <svg
                   className="w-4 h-4 mr-1"
@@ -157,7 +157,7 @@ export function TodoItem({ todo }: TodoItemProps) {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={1.5}
                     d={isExpanded ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'}
                   />
                 </svg>
@@ -167,7 +167,7 @@ export function TodoItem({ todo }: TodoItemProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleDelete}
-                className="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 flex items-center"
+                className="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 flex items-center"
               >
                 <svg
                   className="w-4 h-4 mr-1"
@@ -178,7 +178,7 @@ export function TodoItem({ todo }: TodoItemProps) {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={1.5}
                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                   />
                 </svg>
