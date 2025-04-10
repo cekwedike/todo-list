@@ -5,14 +5,47 @@ import { Todo } from '@/types/todo';
 import { TodoItem } from './TodoItem';
 import { TodoForm } from './TodoForm';
 import { getTodoStats } from '@/utils/todoUtils';
+import { useParams } from 'react-router-dom';
 
-export function TodoList() {
+interface TodoListProps {
+  filter: 'all' | 'active' | 'completed' | 'category';
+}
+
+export function TodoList({ filter }: TodoListProps) {
   const { state } = useTodo();
   const [isAddingTodo, setIsAddingTodo] = useState(false);
+  const { category } = useParams();
   const stats = getTodoStats(state.todos);
+
+  const filteredTodos = state.todos.filter(todo => {
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+    if (filter === 'category' && category) return todo.category.toLowerCase() === category.toLowerCase();
+    return true;
+  });
 
   return (
     <div className="space-y-6">
+      {/* Page Title */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          {filter === 'category' && category
+            ? `${category} Tasks`
+            : filter === 'all'
+            ? 'All Tasks'
+            : `${filter.charAt(0).toUpperCase() + filter.slice(1)} Tasks`}
+        </h1>
+        <button
+          onClick={() => setIsAddingTodo(true)}
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Add Task
+        </button>
+      </div>
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <motion.div
@@ -91,27 +124,14 @@ export function TodoList() {
         </motion.div>
       </div>
 
-      {/* Add Todo Button */}
-      <motion.button
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.99 }}
-        onClick={() => setIsAddingTodo(true)}
-        className="w-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm text-slate-900 dark:text-slate-100 font-medium py-3 px-4 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors flex items-center justify-center space-x-2"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-        <span>Add New Task</span>
-      </motion.button>
-
-      {/* Todo Form */}
+      {/* Add Todo Form */}
       <AnimatePresence>
         {isAddingTodo && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg shadow-sm p-4 border border-slate-200 dark:border-slate-700"
+            exit={{ opacity: 0, y: -20 }}
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700"
           >
             <TodoForm onClose={() => setIsAddingTodo(false)} />
           </motion.div>
@@ -119,19 +139,55 @@ export function TodoList() {
       </AnimatePresence>
 
       {/* Todo List */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         <AnimatePresence>
-          {state.todos.map((todo: Todo) => (
+          {filteredTodos.length === 0 ? (
             <motion.div
-              key={todo.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-12"
             >
-              <TodoItem todo={todo} />
+              <svg
+                className="mx-auto h-12 w-12 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No tasks</h3>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Get started by creating a new task.
+              </p>
+              <div className="mt-6">
+                <button
+                  onClick={() => setIsAddingTodo(true)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-blue-700 bg-blue-100 hover:bg-blue-200 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  New Task
+                </button>
+              </div>
             </motion.div>
-          ))}
+          ) : (
+            filteredTodos.map((todo) => (
+              <motion.div
+                key={todo.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+              >
+                <TodoItem todo={todo} />
+              </motion.div>
+            ))
+          )}
         </AnimatePresence>
       </div>
     </div>
