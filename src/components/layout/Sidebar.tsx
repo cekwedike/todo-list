@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTodo } from '@/context/TodoContext';
 import { TodoFilters } from '@/types/todo';
 import { motion } from 'framer-motion';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, NavLink } from 'react-router-dom';
 
 export function Sidebar() {
   const { state, dispatch } = useTodo();
@@ -12,6 +12,12 @@ export function Sidebar() {
 
   const handleFilterChange = (filter: Partial<TodoFilters>) => {
     dispatch({ type: 'SET_FILTERS', payload: filter });
+  };
+
+  const stats = {
+    total: state.todos.length,
+    active: state.todos.filter(todo => !todo.completed).length,
+    completed: state.todos.filter(todo => todo.completed).length
   };
 
   const menuItems = [
@@ -77,20 +83,19 @@ export function Sidebar() {
       <nav className="flex-1 px-4 py-2">
         <div className="space-y-1">
           {menuItems.map((item) => (
-            <motion.button
+            <NavLink
               key={item.name}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={item.action}
-              className={`w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-colors ${
-                item.active
-                  ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100'
-                  : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400'
-              }`}
+              to={item.name.toLowerCase()}
+              end
+              className={({ isActive }) =>
+                `w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-colors ${
+                  isActive ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100' : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400'
+                }`
+              }
             >
               {item.icon}
               {!isCollapsed && <span className="text-sm font-medium">{item.name}</span>}
-            </motion.button>
+            </NavLink>
           ))}
         </div>
 
@@ -101,19 +106,17 @@ export function Sidebar() {
             </h3>
             <div className="space-y-1">
               {categories.map((category) => (
-                <motion.button
+                <NavLink
                   key={category.value}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => handleFilterChange({ category: category.value as any })}
-                  className={`w-full text-left px-4 py-2.5 rounded-lg transition-colors ${
-                    state.filters.category === category.value
-                      ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100'
-                      : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400'
-                  }`}
+                  to={`/category/${category.value}`}
+                  className={({ isActive }) =>
+                    `w-full text-left px-4 py-2.5 rounded-lg transition-colors ${
+                      isActive ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100' : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400'
+                    }`
+                  }
                 >
                   <span className="text-sm font-medium">{category.name}</span>
-                </motion.button>
+                </NavLink>
               ))}
             </div>
           </div>
@@ -133,6 +136,12 @@ export function Sidebar() {
           </div>
         </div>
       )}
+
+      <div className="mt-auto pt-8">
+        <div className="text-sm text-slate-400">
+          <p>Total Tasks: {stats.total}</p>
+        </div>
+      </div>
     </motion.aside>
   );
 } 
