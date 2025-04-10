@@ -5,26 +5,26 @@ import { Header } from './Header';
 import { Navigation } from './Navigation';
 
 export function Layout() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Mobile Navigation Overlay */}
       <div className={`
-        fixed inset-0 bg-gray-800/60 backdrop-blur-sm z-20 lg:hidden
+        fixed inset-0 bg-slate-800/60 backdrop-blur-sm z-20 lg:hidden
         ${isSidebarOpen ? 'block' : 'hidden'}
       `} onClick={() => setIsSidebarOpen(false)} />
 
       {/* Header */}
       <Header onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-      <div className="flex">
+      <div className="flex h-[calc(100vh-4rem)]">
         {/* Navigation */}
         <Navigation isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
         {/* Main Content */}
-        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8 lg:pl-[300px]">
-          <div className="max-w-7xl mx-auto">
+        <main className="flex-1 overflow-y-auto">
+          <div className="container mx-auto px-4 py-8">
             <Routes>
               <Route path="/" element={<TodoList filter="all" />} />
               <Route path="/active" element={<TodoList filter="active" />} />
