@@ -1,39 +1,38 @@
 import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { TodoList } from '../todo/TodoList';
-import { Header } from './Header';
+import { Outlet } from 'react-router-dom';
 import { Navigation } from './Navigation';
 
 export function Layout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <Header onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <header className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-40">
+        <div className="flex items-center justify-between h-full px-4">
+          <div className="flex items-center">
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2 text-gray-500 lg:hidden"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <h1 className="ml-4 text-xl font-semibold text-gray-900 dark:text-white">Todo App</h1>
+          </div>
+        </div>
+      </header>
 
       {/* Main Layout */}
-      <div className="flex min-h-[calc(100vh-4rem)]">
+      <div className="flex pt-16 h-screen">
         {/* Navigation */}
         <Navigation isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-        {/* Mobile Navigation Overlay */}
-        {isSidebarOpen && (
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        )}
-
         {/* Main Content */}
-        <main className="flex-1 w-full lg:w-[calc(100%-18rem)]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <Routes>
-              <Route path="/" element={<TodoList filter="all" />} />
-              <Route path="/active" element={<TodoList filter="active" />} />
-              <Route path="/completed" element={<TodoList filter="completed" />} />
-              <Route path="/category/:category" element={<TodoList filter="category" />} />
-            </Routes>
+        <main className="flex-1 overflow-y-auto">
+          <div className="container mx-auto px-4 py-8">
+            <Outlet />
           </div>
         </main>
       </div>
