@@ -10,8 +10,8 @@ export function TodoFilter() {
     dispatch({ type: 'SET_FILTERS', payload: { status } });
   };
 
-  const handleSearchChange = (searchQuery: string) => {
-    dispatch({ type: 'SET_FILTERS', payload: { searchQuery } });
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: 'SET_FILTERS', payload: { searchQuery: event.target.value } });
   };
 
   const handlePriorityChange = (priority: Priority | undefined) => {
@@ -19,90 +19,85 @@ export function TodoFilter() {
   };
 
   return (
-    <div className="space-y-4">
-      {/* Status Filter */}
-      <div className="flex flex-wrap gap-2">
+    <div className="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-sm dark:bg-slate-800">
+      <div className="flex items-center gap-4">
+        <input
+          type="text"
+          placeholder="Search todos..."
+          value={filters.searchQuery}
+          onChange={handleSearchChange}
+          className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+        />
+      </div>
+      <div className="flex gap-2">
         <button
           onClick={() => handleStatusChange('all')}
-          className={`px-3 py-1 text-sm font-medium rounded-md ${
+          className={`px-4 py-2 rounded-lg transition-colors ${
             filters.status === 'all'
-              ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+              ? 'bg-blue-500 text-white dark:bg-blue-600'
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white'
           }`}
         >
           All
         </button>
         <button
           onClick={() => handleStatusChange('active')}
-          className={`px-3 py-1 text-sm font-medium rounded-md ${
+          className={`px-4 py-2 rounded-lg transition-colors ${
             filters.status === 'active'
-              ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+              ? 'bg-blue-500 text-white dark:bg-blue-600'
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white'
           }`}
         >
           Active
         </button>
         <button
           onClick={() => handleStatusChange('completed')}
-          className={`px-3 py-1 text-sm font-medium rounded-md ${
+          className={`px-4 py-2 rounded-lg transition-colors ${
             filters.status === 'completed'
-              ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+              ? 'bg-blue-500 text-white dark:bg-blue-600'
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white'
           }`}
         >
           Completed
         </button>
       </div>
-
-      {/* Search Filter */}
-      <div>
-        <input
-          type="text"
-          placeholder="Search tasks..."
-          value={filters.searchQuery}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300"
-        />
-      </div>
-
-      {/* Priority Filter */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex gap-2">
         <button
           onClick={() => handlePriorityChange(undefined)}
-          className={`px-3 py-1 text-sm font-medium rounded-md ${
+          className={`px-4 py-2 rounded-lg transition-colors ${
             filters.priority === undefined
-              ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+              ? 'bg-blue-500 text-white dark:bg-blue-600'
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white'
           }`}
         >
           All Priorities
         </button>
         <button
           onClick={() => handlePriorityChange('high')}
-          className={`px-3 py-1 text-sm font-medium rounded-md ${
+          className={`px-4 py-2 rounded-lg transition-colors ${
             filters.priority === 'high'
-              ? 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+              ? 'bg-red-500 text-white dark:bg-red-600'
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white'
           }`}
         >
           High
         </button>
         <button
           onClick={() => handlePriorityChange('medium')}
-          className={`px-3 py-1 text-sm font-medium rounded-md ${
+          className={`px-4 py-2 rounded-lg transition-colors ${
             filters.priority === 'medium'
-              ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+              ? 'bg-yellow-500 text-white dark:bg-yellow-600'
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white'
           }`}
         >
           Medium
         </button>
         <button
           onClick={() => handlePriorityChange('low')}
-          className={`px-3 py-1 text-sm font-medium rounded-md ${
+          className={`px-4 py-2 rounded-lg transition-colors ${
             filters.priority === 'low'
-              ? 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+              ? 'bg-green-500 text-white dark:bg-green-600'
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white'
           }`}
         >
           Low
