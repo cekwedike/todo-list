@@ -24,7 +24,7 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
   return (
     <aside
       className={`
-        w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
+        w-64 lg:w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
         fixed inset-y-0 left-0 z-30 transform transition-transform duration-300
         lg:relative lg:translate-x-0
         ${!isOpen ? '-translate-x-full' : 'translate-x-0'}
