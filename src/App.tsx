@@ -1,7 +1,7 @@
 import { TodoProvider } from './context/TodoContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
-import Todo from './components/Todo';
+import { TodoList } from './components/pages/TodoList';
 
 function App() {
   return (
@@ -9,10 +9,10 @@ function App() {
       <TodoProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Todo />} />
-            <Route path="active" element={<Todo filter="active" />} />
-            <Route path="completed" element={<Todo filter="completed" />} />
-            <Route path="category/:category" element={<Todo />} />
+            <Route index element={<TodoList />} />
+            <Route path="active" element={<TodoList filter="active" />} />
+            <Route path="completed" element={<TodoList filter="completed" />} />
+            <Route path="category/:category" element={<TodoList />} />
           </Route>
         </Routes>
       </TodoProvider>
