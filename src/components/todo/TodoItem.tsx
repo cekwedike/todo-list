@@ -82,7 +82,7 @@ export function TodoItem({ todo }: TodoItemProps) {
           </motion.button>
 
           <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
               <h3
                 className={`text-base font-medium ${
                   todo.completed
@@ -92,7 +92,7 @@ export function TodoItem({ todo }: TodoItemProps) {
               >
                 {todo.text}
               </h3>
-              <div className="flex items-center space-x-2 ml-4">
+              <div className="flex flex-wrap items-center gap-2">
                 <span
                   className={`px-2 py-1 text-xs font-medium rounded-md ${getPriorityColor(
                     todo.priority

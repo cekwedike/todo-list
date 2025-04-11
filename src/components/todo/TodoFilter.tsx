@@ -19,17 +19,17 @@ export function TodoFilter() {
   };
 
   return (
-    <div className="flex items-center justify-between gap-4 p-3 bg-white rounded-lg shadow-sm dark:bg-slate-800">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-3 bg-white rounded-lg shadow-sm dark:bg-slate-800">
       <input
         type="text"
         placeholder="Search todos..."
         value={filters.searchQuery}
         onChange={handleSearchChange}
-        className="w-64 px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+        className="w-full sm:w-64 px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
       />
       
-      <div className="flex items-center gap-3">
-        <div className="flex gap-1">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <div className="flex flex-wrap gap-1">
           <button
             onClick={() => handleStatusChange('all')}
             className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
@@ -62,9 +62,9 @@ export function TodoFilter() {
           </button>
         </div>
 
-        <div className="h-6 w-px bg-gray-200 dark:bg-slate-600" />
+        <div className="hidden sm:block h-6 w-px bg-gray-200 dark:bg-slate-600" />
 
-        <div className="flex gap-1">
+        <div className="flex flex-wrap gap-1">
           <button
             onClick={() => handlePriorityChange(undefined)}
             className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${

@@ -26,7 +26,7 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-gray-900/50 lg:hidden"
+          className="fixed inset-0 bg-gray-900/50 lg:hidden z-30"
           onClick={onClose}
         />
       )}
@@ -54,7 +54,7 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
 
           {/* Navigation Links */}
           <nav className="flex-1 overflow-y-auto">
-            <div className="px-3 space-y-1">
+            <div className="space-y-1 px-3">
               <NavLink
                 to="/"
                 end

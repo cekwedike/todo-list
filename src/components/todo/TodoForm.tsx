@@ -25,8 +25,10 @@ export function TodoForm({ onClose }: TodoFormProps) {
       text: text.trim(),
       completed: false,
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       priority,
       category,
+      recurrence: 'none',
       ...(notes && { notes: notes.trim() }),
       ...(dueDate && { dueDate }),
     };
@@ -60,7 +62,7 @@ export function TodoForm({ onClose }: TodoFormProps) {
                 className="w-full bg-slate-50 dark:bg-slate-700/50 rounded-md p-3 text-sm text-slate-600 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-1 focus:ring-slate-400 dark:focus:ring-slate-500 border-0"
                 rows={3}
               />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
                     Due Date
@@ -104,7 +106,7 @@ export function TodoForm({ onClose }: TodoFormProps) {
               </div>
             </motion.div>
           )}
-          <div className="mt-4 flex items-center justify-between">
+          <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
