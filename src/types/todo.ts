@@ -3,7 +3,7 @@ export type Category = 'work' | 'personal' | 'shopping' | 'health';
 export type Recurrence = 'none' | 'daily' | 'weekly' | 'monthly';
 
 export interface Todo {
-  id: number;
+  id: string;
   text: string;
   completed: boolean;
   dueDate?: string;
